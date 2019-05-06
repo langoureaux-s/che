@@ -13,6 +13,8 @@
 
 import {CheWorkspace} from '../../components/api/workspace/che-workspace.factory';
 
+const MINIMAL_SUPORTED_VERSION = 7;
+
 /**
  * This is a helper class for workspaces.
  *
@@ -42,13 +44,50 @@ export class WorkspacesService {
    * @param {string=} envName environment name
    * @returns {boolean}
    */
-  isSupported(workspace: che.IWorkspace, envName?: string): boolean {
+  isSupportedRecipeTypes(workspace: che.IWorkspace, envName?: string): boolean {
     envName = envName || workspace.config.defaultEnv;
 
     const supportedRecipeTypes = this.cheWorkspace.getSupportedRecipeTypes(),
       envRecipeType = envName ? workspace.config.environments[envName].recipe.type : 'no-environment';
 
     return supportedRecipeTypes.indexOf(envRecipeType) !== -1;
+  }
+
+ /**
+   *  Returns `true` if supported.
+   * @param {che.IWorkspace} workspace
+   * @param {string=} envName environment name
+   * @returns {boolean}
+   */
+  isSupported(workspace: che.IWorkspace, envName?: string): boolean {
+    envName = envName || workspace.config.defaultEnv;
+
+    return this.isSupportedRecipeTypes(workspace, envName) && this.isSupportedVersion(workspace);
+  }
+
+   /**
+   * Returns `true` if supported in the current version of the product.
+   * @param {che.IWorkspace} workspace
+   * @returns {boolean}
+   */
+  isSupportedVersion(workspace: che.IWorkspace): boolean {
+    const config = workspace.config;
+    const machines = config.environments[config.defaultEnv];
+
+    let version: number;
+    if (!Object.keys(machines).length || config.attributes.editor || config.attributes.plugins) {
+      version = 7;
+    } else {
+      for (const key in machines) {
+        const installers = machines[key].installers;
+        if (installers && installers.length !== 0) {
+          version = 6;
+          break;
+        }
+      }
+    }
+
+    return version >= MINIMAL_SUPORTED_VERSION;
   }
 
 }
