@@ -13,3 +13,5 @@
 
 image: eclipse/che-keycloak:nightly
 requireAdminPasswordChange: true
+
+keycloak.tls.secretName: tls-keycloak
