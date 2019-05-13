@@ -15,7 +15,8 @@ metadata:
 spec:
   secretName: {{ .Values.global.tls.secretName }}
   issuerRef:
-    name: letsencrypt
+    name: {{ .Values.global.tls.certManagerIssuer }}
+    kind: {{ .Values.global.tls.certManagerIssuerType }}
   commonName: {{ .Values.global.cheDomain }}
   dnsNames:
       - {{ .Values.global.cheDomain }}

@@ -40,6 +40,10 @@ global:
   tls:
     enabled: false
     useCertManager: true
+    certManagerCreateIssuer: true
+    certManagerIssuer: letsencrypt
+    certManagerIssuerType: ClusterIssuer
+    certManagerEmail: user@user.com
     useStaging: true
     secretName: che-tls
     useSelfSignedCerts: false
