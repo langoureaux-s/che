@@ -29,7 +29,7 @@ data:
   CHE_DEBUG_SERVER: "true"
   CHE_INFRASTRUCTURE_ACTIVE: "kubernetes"
   CHE_INFRA_KUBERNETES_INGRESS_DOMAIN: {{ .Values.global.ingressDomain }}
-  CHE_INFRA_KUBERNETES_MACHINE__START__TIMEOUT__MIN: {{ .Values.global.machineStartTimeoutMin }}
+  CHE_INFRA_KUBERNETES_MACHINE__START__TIMEOUT__MIN: {{ .Values.global.machineStartTimeout }}
   CHE_INFRA_KUBERNETES_MASTER__URL: ""
 {{- if and .Values.global.tls .Values.global.tls.enabled }}
   CHE_INFRA_KUBERNETES_TLS__ENABLED: {{ .Values.global.tls.enabled | quote}}
