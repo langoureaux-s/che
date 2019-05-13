@@ -19,9 +19,8 @@ metadata:
 {{- if .Values.global.tls.enabled }}
     {{ .Values.global.ingressAnnotationsPrefix }}ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/tls-acme: "true"
-    {{- if .Values.global.tls.useCertManager }}
+{{- if .Values.global.tls.useCertManager }}
     certmanager.k8s.io/cluster-issuer: {{ .Values.global.tls.certManagerIssuer }}
-    {{- end }}
 {{- end }}
 {{- else }}
     {{ .Values.global.ingressAnnotationsPrefix }}ingress.kubernetes.io/ssl-redirect: "false"
