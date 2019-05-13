@@ -18,6 +18,11 @@ metadata:
     {{ .Values.global.ingressAnnotationsPrefix }}ingress.kubernetes.io/proxy-connect-timeout: "3600"
 {{- if .Values.global.tls.enabled }}
     {{ .Values.global.ingressAnnotationsPrefix }}ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    {{- if .Values.global.tls.useCertManager }}
+    certmanager.k8s.io/cluster-issuer: {{ .Values.global.tls.certManagerIssuer }}
+    {{- end }}
+{{- end }}
 {{- else }}
     {{ .Values.global.ingressAnnotationsPrefix }}ingress.kubernetes.io/ssl-redirect: "false"
 {{- end }}
@@ -26,7 +31,11 @@ spec:
   tls:
   - hosts:
     - {{ template "keycloakHost" . }}
+{{- if eq .Values.global.serverStrategy "multi-host" }}
+    secretName: "keycloak-{{ .Values.global.tls.secretName }}"
+{{- else }}
     secretName: {{ .Values.global.tls.secretName }}
+{{- end }}
 {{- end }}
   rules:
 {{- if eq .Values.global.serverStrategy "default-host" }}
