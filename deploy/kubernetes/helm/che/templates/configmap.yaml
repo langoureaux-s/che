@@ -29,7 +29,7 @@ data:
   CHE_DEBUG_SERVER: "true"
   CHE_INFRASTRUCTURE_ACTIVE: "kubernetes"
   CHE_INFRA_KUBERNETES_INGRESS_DOMAIN: {{ .Values.global.ingressDomain }}
-  CHE_INFRA_KUBERNETES_MACHINE__START__TIMEOUT__MIN: "5"
+  CHE_INFRA_KUBERNETES_MACHINE__START__TIMEOUT__MIN: {{ .Values.global.machineStartTimeoutMin }}
   CHE_INFRA_KUBERNETES_MASTER__URL: ""
 {{- if and .Values.global.tls .Values.global.tls.enabled }}
   CHE_INFRA_KUBERNETES_TLS__ENABLED: {{ .Values.global.tls.enabled | quote}}
@@ -52,7 +52,7 @@ data:
   CHE_INFRA_KUBERNETES_NAMESPACE: {{ .Values.global.cheWorkspacesNamespace }}
   CHE_INFRA_KUBERNETES_SERVICE__ACCOUNT__NAME: {{ .Values.global.cheWorkspaceServiceAccount }}
   CHE_INFRA_KUBERNETES_TRUST__CERTS: "false"
-  CHE_INFRA_KUBERNETES_PVC_STRATEGY: "common"
+  CHE_INFRA_KUBERNETES_PVC_STRATEGY: {{ .Values.global.pvcStrategy }}
   CHE_INFRA_KUBERNETES_PVC_QUANTITY: {{ .Values.global.pvcClaim }}
   CHE_INFRA_KUBERNETES_PVC_PRECREATE__SUBPATHS: "true"
   CHE_INFRA_KUBERNETES_POD_SECURITY__CONTEXT_RUN__AS__USER: "{{ .Values.global.securityContext.runAsUser }}"
@@ -89,6 +89,9 @@ data:
 {{- end }}
 {{- if .Values.global.cheWorkspaceClusterRole }}
   CHE_INFRA_KUBERNETES_CLUSTER__ROLE__NAME: {{ .Values.global.cheWorkspaceClusterRole }}
+{{- end }}
+{{- if .Values.global.cheWorkspacePluginBrokerWaitTimeoutMin }} 
+  CHE_WORKSPACE_PLUGIN__BROKER_WAIT__TIMEOUT__MIN: {{ .Values.global.cheWorkspacePluginBrokerWaitTimeoutMin }}
 {{- end }}
   CHE_CORS_ENABLED: "true"
   CHE_CORS_ALLOW__CREDENTIALS: "false"
